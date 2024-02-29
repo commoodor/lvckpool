@@ -1,0 +1,41 @@
+name: Fetch and Send Mining Data
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Schedule to run every hour
+
+jobs:
+  fetch-and-send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install axios telegram-bot-api
+
+      - name: Fetch mining data
+        run: |
+          MINING_DATA=$(curl -s https://luckpool.net/verus/miner/RVxwfn5TggLnYPgEAGQf8W7kes28QNQGJg)
+          echo "::set-output name=mining_data::$MINING_DATA"
+
+      - name: Process and send data to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: <your_telegram_chat_id>
+        run: |
+          MINING_DATA="$MINING_DATA"
+          ADDRESS=$(echo "$MINING_DATA" | grep -oP 'Address : \K.*')
+          HASHRATE=$(echo "$MINING_DATA" | grep -oP 'Hashrate : \K.*')
+          MESSAGE="Address : $ADDRESS\nHashrate : $HASHRATE"
+          MESSAGE="${MESSAGE//'|'/' - '}"  # Replace '|' with ' - '
+          MESSAGE="${MESSAGE//' - '/'\ - '}"  # Escape ' - '
+          MESSAGE="${MESSAGE//' - '/' \| '}"  # Replace ' - ' with ' | '
+          MESSAGE="${MESSAGE//' \| '/'\n'}"  # Replace ' | ' with newline
+          echo "Sending message to Telegram..."
+          echo "$MESSAGE" | node send_telegram_message.js
