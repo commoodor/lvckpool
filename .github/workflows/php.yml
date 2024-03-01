@@ -22,5 +22,5 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID1: ${{ secrets.TELEGRAM_CHAT_ID1 }}
         run: |
-          php -r 'file_put_contents("send.php", file_get_contents("https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php?token=GHSAT0AAAAAACO67VKKHDLIOC2MOFFTSOPQZPB7EYQ"));'
-          php send.php
+          # php -r 'file_put_contents("main.php", file_get_contents("https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php?token=GHSAT0AAAAAACO67VKKHDLIOC2MOFFTSOPQZPB7EYQ"));'
+          php main.php
