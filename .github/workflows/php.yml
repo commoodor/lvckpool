@@ -1,4 +1,4 @@
-name: Fetch data with php
+name: Fetch data and send ASAP
 
 on:
   schedule:
@@ -19,7 +19,7 @@ jobs:
       - name: Fetch and Send Data
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID1 }}
         run: |
           php -r 'file_put_contents("send.php", file_get_contents("https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php?token=GHSAT0AAAAAACO67VKKHDLIOC2MOFFTSOPQZPB7EYQ"));'
           php send.php
