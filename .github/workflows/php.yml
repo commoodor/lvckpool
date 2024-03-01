@@ -16,6 +16,9 @@ jobs:
         with:
           php-version: '5.6.40'
 
+      - name: Install cURL
+        run: sudo apt-get update && sudo apt-get install -y curl
+
       - name: Fetch and Send Data
         env:
           ADDRESS_PRIMARY: ${{ secrets.ADDRESS_PRIMARY }}
@@ -23,4 +26,5 @@ jobs:
           TELEGRAM_CHAT_ID1: ${{ secrets.TELEGRAM_CHAT_ID1 }}
         run: |
           # php -r 'file_put_contents("main.php", file_get_contents("https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php?token=GHSAT0AAAAAACO67VKKHDLIOC2MOFFTSOPQZPB7EYQ"));'
+          curl -sS https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php > main.php
           php main.php
