@@ -14,12 +14,12 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '5.6.40'
 
       - name: Fetch and Send Data
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          php -r 'file_put_contents("send.php", file_get_contents("https://raw.githubusercontent.com/commoodor/lvckpool/main/main.php"));'
+          php -r 'file_put_contents("send.php", file_get_contents("https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php"));'
           php send.php
