@@ -34,11 +34,11 @@ foreach ($workers as $index => $worker) {
     // Process and format the data
 $formatted_data .=
 ($index + 1) . " | " .
-$workerData[3] . " - " .
-$workerData[0] . " - " .
-$workerInfo['hashrateString'] . " - " .
-$workerInfo['stratumServer'] . " - " .
-$workerInfo['software'] . "\n";
+$workerData[3] . " - " . // Status
+$workerData[0] . " - " . // ID
+$workerInfo['hashrateString'] . " - " . // Hashrate
+$workerInfo['stratumServer'] . " - " . // Stratum Server
+$workerInfo['software'] . "\n"; // Miner Application
 
 
 }
