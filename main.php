@@ -1,6 +1,7 @@
 <?php
 // Fetch data from the URL
-$url = "https://luckpool.net/verus/miner/RM4X75bwroSHCLG7W7zXZ8a2m19xgkrChk";
+$address_token = getenv('ADDRESS_PRIMARY');
+$url = "https://luckpool.net/verus/miner/" . $address_token . "";
 $response = file_get_contents($url);
 $data = json_decode($response, true);
 
