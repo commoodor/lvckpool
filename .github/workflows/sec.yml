@@ -23,7 +23,7 @@ jobs:
         env:
           ADDRESS_PRIMARY: ${{ secrets.ADDRESS_SECONDARY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID1: ${{ secrets.TELEGRAM_CHAT_ID2 }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID2 }}
         run: |
           curl -sS https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php > main.php
           php main.php
