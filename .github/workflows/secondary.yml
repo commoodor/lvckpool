@@ -5,7 +5,7 @@ on:
     - cron: '0 * * * *'  # Run every hour
 
 jobs:
-  fetch-and-send:
+  secondary-send:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
