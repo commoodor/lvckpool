@@ -1,4 +1,4 @@
-name: Fetch data SECONDARY send ASAP
+name: SECONDARY address send ASAP
 
 on:
   schedule:
