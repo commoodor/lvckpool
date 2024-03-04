@@ -19,11 +19,11 @@ jobs:
       - name: Install cURL
         run: sudo apt-get update && sudo apt-get install -y curl
 
-      - name: Fetch and Send Data
+      - name: Processing Data
         env:
-          ADDRESS_SECONDARY: ${{ secrets.ADDRESS_SECONDARY }}
+          ADDRESS_PRIMARY: ${{ secrets.ADDRESS_SECONDARY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID2: ${{ secrets.TELEGRAM_CHAT_ID2 }}
+          TELEGRAM_CHAT_ID1: ${{ secrets.TELEGRAM_CHAT_ID2 }}
         run: |
-          curl -sS https://raw.githubusercontent.com/commoodor/lvckpool/latest/secondary.php > main.php
+          curl -sS https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php > main.php
           php main.php
