@@ -1,6 +1,8 @@
 <?php
 // Fetch data from the URL
-$address_token = getenv('ADDRESS_PRIMARY');
+$address_token         = getenv('ADDRESS_PRIMARY');
+$telegram_bot_token    = getenv('TELEGRAM_BOT_TOKEN');
+$telegram_chat_id      = getenv('TELEGRAM_CHAT_ID1');
 $url = "https://luckpool.net/verus/miner/" . $address_token . "";
 $response = file_get_contents($url);
 $data = json_decode($response, true);
@@ -29,19 +31,19 @@ $workerInfo['software'] . "\n"; // Miner Application
 }
 
 // Send data to Telegram
-$telegram_bot_token = getenv('TELEGRAM_BOT_TOKEN');
-$telegram_chat_id = getenv('TELEGRAM_CHAT_ID1');
 $telegram_api_url = "https://api.telegram.org/bot$telegram_bot_token/sendMessage";
 $message = "
-🌐Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "\n
-Address : " . $data['address'] . "\n
+🌐Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "🌐\n
+🔰Address : " . $data['address'] . "\n
 ⚡️Hashrate : " . $data['hashrateString'] . "\n
-Estimated Luck : " . $data['estimatedLuck'] . "
-Efficiency : " . $data['efficiency'] . "%\n\n
-Immature : " . $data['immature'] . "
-💎Balance : " . $data['balance'] . "\n
+📊Estimated Luck : " . $data['estimatedLuck'] . "
+⚠Efficiency : " . $data['efficiency'] . "%\n
+♻Immature : " . $data['immature'] . "
+💎Balance Pool : " . $data['balance'] . "
+💎Total Balance : " . $data['balance'] . "
+💲Estimate Payment : " . $data['balance'] . "\n
 
-# | Status | ID | Hashrate | Stratum | Miner \n" . 
+# | Status | ID | Hashrate | Miner \n" . 
 $formatted_data;
 
 $payload = [
