@@ -20,6 +20,7 @@ foreach ($workers as $index => $worker) {
     $workerInfo = json_decode($workerJson, true);
     
     // Display worker data
+    /*
     echo "<tr>";
     echo "<td>" . ($index + 1) . "</td>";
     echo "<td>" . $workerData[3] . "</td>"; // Status
@@ -30,6 +31,7 @@ foreach ($workers as $index => $worker) {
     // Display Software
     echo "<td>" . $workerInfo['software'] . "</td>";
     echo "</tr>";
+    */
 
     // Process and format the data
 $formatted_data .=
