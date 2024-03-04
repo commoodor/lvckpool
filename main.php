@@ -46,24 +46,14 @@ $message = "
 # | Status | ID | Hashrate | Miner \n" . 
 $formatted_data;
 
-$payload = [
-    'chat_id' => $telegram_chat_id,
-    'text' => $message
-];
-
 $options = [
     'http' => [
         'method' => 'POST',
         'header' => 'Content-Type: application/json',
-        'content' => json_encode($payload)
+        'content' => json_encode(['chat_id' => $telegram_chat_id, 'text' => $message])
     ]
 ];
 
-$context = stream_context_create($options);
-$result = file_get_contents($telegram_api_url, false, $context);
-if ($result === FALSE) {
-    echo "Failed to send message to Telegram.";
-} else {
-    echo "Message sent to Telegram successfully.";
-}
+$result = file_get_contents($telegram_api_url, false, stream_context_create($options));
+echo ($result === FALSE) ? "Failed to send message." : "Message sended successfully.";
 ?>
