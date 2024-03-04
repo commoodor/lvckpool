@@ -1,4 +1,4 @@
-name: Fetch data and send ASAP
+name: PRIMARY address send ASAP
 
 on:
   schedule:
