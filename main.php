@@ -46,15 +46,15 @@ $workerInfo['software'] . "\n"; // Miner Application
 // Send data to Telegram
 $telegram_api_url = "https://api.telegram.org/bot$telegram_bot_token/sendMessage";
 $message = "
-🌐Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "🌐\n
+🌐Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . " 🌐\n
 🔰Address : " . $data['address'] . "\n
-⚡️Hashrate : " . $data['hashrateString'] . "\n
+⚡️Hashrate : " . $data['hashrateString'] . "
 📊Estimated Luck : " . $data['estimatedLuck'] . "
 ⚠Efficiency : " . $data['efficiency'] . "%\n
 ♻Immature : " . $data['immature'] . "
-💎Balance Pool : " . $data['balance'] . "
+💰Balance Pool : " . $data['balance'] . "
 💎Total Balance : " . $balance . " 
-💲Estimated Paid : " . estimatedpaid($balance) . "\n
+💵Estimated Paid : " . estimatedpaid($balance) . "\n
 
 # | Status | ID | Hashrate | Miner \n" . 
 $formatted_data;
