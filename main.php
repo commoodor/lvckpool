@@ -19,47 +19,27 @@ foreach ($workers as $index => $worker) {
     $workerJson = file_get_contents($workerUrl);
     $workerInfo = json_decode($workerJson, true);
     
-    // Display worker data
-    /*
-    echo "<tr>";
-    echo "<td>" . ($index + 1) . "</td>";
-    echo "<td>" . $workerData[3] . "</td>"; // Status
-    echo "<td>" . $workerData[0] . "</td>"; // ID
-    echo "<td>" . $workerData[1] . "</td>"; // Hashrate
-    echo "<td>" . $workerInfo['stratumServer'] . "</td>"; // Stratum Server
-   
-    // Display Software
-    echo "<td>" . $workerInfo['software'] . "</td>";
-    echo "</tr>";
-    */
-
     // Process and format the data
 $formatted_data .=
 ($index + 1) . " | " .
 $workerData[3] . " - " . // Status
 $workerData[0] . " - " . // ID
 $workerInfo['hashrateString'] . " - " . // Hashrate
-$workerInfo['stratumServer'] . " - " . // Stratum Server
 $workerInfo['software'] . "\n"; // Miner Application
-
-
 }
-//echo "</table>";
-
 
 // Send data to Telegram
 $telegram_bot_token = getenv('TELEGRAM_BOT_TOKEN');
 $telegram_chat_id = getenv('TELEGRAM_CHAT_ID1');
 $telegram_api_url = "https://api.telegram.org/bot$telegram_bot_token/sendMessage";
 $message = "
-
-Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "\n\n
+Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "\n
 Address : " . $data['address'] . "\n
-Hashrate : " . $data['hashrateString'] . "\n\n
+Hashrate : " . $data['hashrateString'] . "\n
 Estimated Luck : " . $data['estimatedLuck'] . "\n
 Efficiency : " . $data['efficiency'] . "%\n\n
 Immature : " . $data['immature'] . "\n
-Balance : " . $data['balance'] . "\n\n
+Balance : " . $data['balance'] . "\n
 
 # | Status | ID | Hashrate | Stratum | Miner \n" . 
 $formatted_data;
