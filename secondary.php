@@ -1,9 +1,24 @@
 <?php
 // Fetch data from the URL
-$address_token = getenv('ADDRESS_SECONDARY');
+$address_token         = getenv('ADDRESS_SECONDARY');
+$telegram_bot_token    = getenv('TELEGRAM_BOT_TOKEN');
+$telegram_chat_id      = getenv('TELEGRAM_CHAT_ID2');
 $url = "https://luckpool.net/verus/miner/" . $address_token . "";
 $response = file_get_contents($url);
 $data = json_decode($response, true);
+
+// Fetch balance from explore.verus.io
+$balance = file_get_contents("https://explorer.verus.io/ext/getbalance/" . $address_token . "");
+
+// Convert VRSC to IDR, u can change to your currency
+function estimatedpaid($amount) {
+    $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr";
+    $data = json_decode(file_get_contents($url), true);
+    $formatted_amount = number_format($amount * $data['verus-coin']['idr'], 2, ',', '.');
+    // Add dot for every three digits from the right
+    $formatted_amount = preg_replace('/(\d)(?=(\d{3})+(?!\d))/', '$1.', $formatted_amount);
+    return $formatted_amount . " IDR";
+}
 
 // Extract and sort worker data
 $workers = $data['workers'];
@@ -22,47 +37,36 @@ foreach ($workers as $index => $worker) {
     // Process and format the data
 $formatted_data .=
 ($index + 1) . " | " .
-$workerData[3] . " - " . // Status
+(($workerData[3] == 'on') ? '🟢' : '🔴') . " " . // Status
 $workerData[0] . " - " . // ID
 $workerInfo['hashrateString'] . " - " . // Hashrate
 $workerInfo['software'] . "\n"; // Miner Application
 }
 
 // Send data to Telegram
-$telegram_bot_token = getenv('TELEGRAM_BOT_TOKEN');
-$telegram_chat_id = getenv('TELEGRAM_CHAT_ID2');
 $telegram_api_url = "https://api.telegram.org/bot$telegram_bot_token/sendMessage";
 $message = "
-Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "\n
-Address : " . $data['address'] . "\n
-Hashrate : " . $data['hashrateString'] . "\n
-Estimated Luck : " . $data['estimatedLuck'] . "\n
-Efficiency : " . $data['efficiency'] . "%\n\n
-Immature : " . $data['immature'] . "\n
-Balance : " . $data['balance'] . "\n
+🌐Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . " 🌐\n
+🔰Address : " . $data['address'] . "\n
+⚡️Hashrate : " . $data['hashrateString'] . "
+📊Estimated Luck : " . $data['estimatedLuck'] . "
+⚠Efficiency : " . $data['efficiency'] . "%\n
+♻Immature : " . $data['immature'] . "
+💰Balance Pool : " . $data['balance'] . "
+💎Total Balance : " . $balance . " 
+💵Estimated Paid : " . estimatedpaid($balance) . "\n
 
-# | Status | ID | Hashrate | Stratum | Miner \n" . 
+# | Status | ID | Hashrate | Miner \n" . 
 $formatted_data;
-
-
-$payload = [
-    'chat_id' => $telegram_chat_id,
-    'text' => $message
-];
 
 $options = [
     'http' => [
         'method' => 'POST',
         'header' => 'Content-Type: application/json',
-        'content' => json_encode($payload)
+        'content' => json_encode(['chat_id' => $telegram_chat_id, 'text' => $message])
     ]
 ];
 
-$context = stream_context_create($options);
-$result = file_get_contents($telegram_api_url, false, $context);
-if ($result === FALSE) {
-    echo "Failed to send message to Telegram.";
-} else {
-    echo "Message sent to Telegram successfully.";
-}
+$result = file_get_contents($telegram_api_url, false, stream_context_create($options));
+echo ($result === FALSE) ? "Failed to send message." : "Message sended successfully.";
 ?>
