@@ -7,6 +7,19 @@ $url = "https://luckpool.net/verus/miner/" . $address_token . "";
 $response = file_get_contents($url);
 $data = json_decode($response, true);
 
+// Fetch balance from explore.verus.io
+$balance = file_get_contents("https://explorer.verus.io/ext/getbalance/" . $address_token . "");
+
+// Convert VRSC to IDR, u can change to your currency
+function estimatedpaid($amount) {
+    $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr";
+    $data = json_decode(file_get_contents($url), true);
+    $formatted_amount = number_format($amount * $data['verus-coin']['idr'], 2, ',', '.');
+    // Add dot for every three digits from the right
+    $formatted_amount = preg_replace('/(\d)(?=(\d{3})+(?!\d))/', '$1.', $formatted_amount);
+    return $formatted_amount . " IDR";
+}
+
 // Extract and sort worker data
 $workers = $data['workers'];
 sort($workers);
@@ -40,8 +53,8 @@ $message = "
 ⚠Efficiency : " . $data['efficiency'] . "%\n
 ♻Immature : " . $data['immature'] . "
 💎Balance Pool : " . $data['balance'] . "
-💎Total Balance : " . $data['balance'] . "
-💲Estimate Payment : " . $data['balance'] . "\n
+💎Total Balance : " . $balance . " 
+💲Estimated Paid : " . estimatedpaid($balance) . "\n
 
 # | Status | ID | Hashrate | Miner \n" . 
 $formatted_data;
