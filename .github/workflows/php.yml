@@ -1,6 +1,7 @@
 name: PRIMARY address send ASAP
 
 on:
+  push:
   schedule:
     - cron: '0 * * * *'  # Run every hour
 
