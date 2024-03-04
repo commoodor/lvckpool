@@ -22,7 +22,7 @@ foreach ($workers as $index => $worker) {
     // Process and format the data
 $formatted_data .=
 ($index + 1) . " | " .
-(($workerData[3] == 'on') ? '🟢' : '🔴') . " - " . // Status
+(($workerData[3] == 'on') ? '🟢' : '🔴') . " " . // Status
 $workerData[0] . " - " . // ID
 $workerInfo['hashrateString'] . " - " . // Hashrate
 $workerInfo['software'] . "\n"; // Miner Application
@@ -33,17 +33,16 @@ $telegram_bot_token = getenv('TELEGRAM_BOT_TOKEN');
 $telegram_chat_id = getenv('TELEGRAM_CHAT_ID1');
 $telegram_api_url = "https://api.telegram.org/bot$telegram_bot_token/sendMessage";
 $message = "
-Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "\n
+🌐Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "\n
 Address : " . $data['address'] . "\n
-Hashrate : " . $data['hashrateString'] . "\n
-Estimated Luck : " . $data['estimatedLuck'] . "\n
+⚡️Hashrate : " . $data['hashrateString'] . "\n
+Estimated Luck : " . $data['estimatedLuck'] . "
 Efficiency : " . $data['efficiency'] . "%\n\n
-Immature : " . $data['immature'] . "\n
-Balance : " . $data['balance'] . "\n
+Immature : " . $data['immature'] . "
+💎Balance : " . $data['balance'] . "\n
 
 # | Status | ID | Hashrate | Stratum | Miner \n" . 
 $formatted_data;
-
 
 $payload = [
     'chat_id' => $telegram_chat_id,
