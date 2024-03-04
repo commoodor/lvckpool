@@ -2,7 +2,7 @@
 // Fetch data from the URL
 $address_token         = getenv('ADDRESS_PRIMARY');
 $telegram_bot_token    = getenv('TELEGRAM_BOT_TOKEN');
-$telegram_chat_id      = getenv('TELEGRAM_CHAT_ID1');
+$telegram_chat_id      = getenv('TELEGRAM_CHAT_ID');
 $url = "https://luckpool.net/verus/miner/" . $address_token . "";
 $response = file_get_contents($url);
 $data = json_decode($response, true);
