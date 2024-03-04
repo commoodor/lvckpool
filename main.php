@@ -22,7 +22,7 @@ foreach ($workers as $index => $worker) {
     // Process and format the data
 $formatted_data .=
 ($index + 1) . " | " .
-$workerData[3] . " - " . // Status
+(($workerData[3] == 'on') ? '🟢' : '🔴') . " - " . // Status
 $workerData[0] . " - " . // ID
 $workerInfo['hashrateString'] . " - " . // Hashrate
 $workerInfo['software'] . "\n"; // Miner Application
