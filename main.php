@@ -54,6 +54,7 @@ $message = "
 ♻Immature : " . $data['immature'] . "
 💰Balance Pool : " . $data['balance'] . "
 💎Total Balance : " . $balance . " 
+💵Price : " . estimatedpaid('1') . "
 💵Estimated Paid : " . estimatedpaid($balance) . "\n
 
 # | Status | ID | Hashrate | Miner \n" . 
