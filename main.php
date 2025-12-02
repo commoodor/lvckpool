@@ -61,11 +61,11 @@ foreach ($workers as $index => $worker) {
 }
 
 $message = "
-🌐 Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . "
-🔰 Address : " . $data['address'] . "
+🌐 Report Date : " . date('d-m-Y H:i:s', $data['timestamp'] + 25200) . " 🌐\n
+🔰 Address : " . $data['address'] . "\n
 ⚡ Hashrate : " . $data['hashrateString'] . "
 📊 Estimated Luck : " . $data['estimatedLuck'] . "
-⚠ Efficiency : " . $data['efficiency'] . "%
+⚠ Efficiency : " . $data['efficiency'] . "%\n
 ♻ Immature : " . $data['immature'] . " VRSC
 💰 Pool Balance : " . $data['balance'] . " VRSC
 💎 Wallet Balance : " . number_format($balance, 8) . " VRSC
