@@ -23,24 +23,6 @@ if(!$balance_raw){
 $balance_raw = floatval($balance_raw);
 $balance = $balance_raw / 100000000;
 
-
-// ---------- PRICE CONVERTER ----------
-function estimatedpaid_old($amount) {
-    global $coingecko_token;
-    $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr&x_cg_demo_api_key=" . $coingecko_token;
-    $response = @file_get_contents($url);
-
-    if (!$response) {
-        return "API ERROR";
-    }
-
-    $data = json_decode($response, true);
-    
-    $idr = $amount * $data['verus-coin']['idr'];
-    $formatted_amount = number_format($idr, 2, ',', '.');
-    return preg_replace('/(\d)(?=(\d{3})+(?!\d))/', '$1.', $formatted_amount) . " IDR";
-}
-
 // ---------- PRICE CONVERTER (cURL) ----------
 function estimatedpaid($amount) {
     global $coingecko_token;
