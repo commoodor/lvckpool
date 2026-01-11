@@ -25,6 +25,7 @@ jobs:
           ADDRESS_PRIMARY: ${{ secrets.ADDRESS_SECONDARY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID2 }}
+          COIN_GECKO_API: ${{ secrets.COIN_GECKO_API }}
         run: |
           curl -sS https://raw.githubusercontent.com/commoodor/lvckpool/latest/main.php > main.php
           php main.php
