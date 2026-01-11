@@ -25,7 +25,7 @@ $balance = $balance_raw / 100000000;
 
 
 // ---------- PRICE CONVERTER ----------
-function estimatedpaid($amount) {
+function estimatedpaid_old($amount) {
     global $coingecko_token;
     $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr&x_cg_demo_api_key=" . $coingecko_token;
     $response = @file_get_contents($url);
@@ -40,6 +40,49 @@ function estimatedpaid($amount) {
     $formatted_amount = number_format($idr, 2, ',', '.');
     return preg_replace('/(\d)(?=(\d{3})+(?!\d))/', '$1.', $formatted_amount) . " IDR";
 }
+
+// ---------- PRICE CONVERTER (cURL) ----------
+function estimatedpaid($amount) {
+    global $coingecko_token;
+
+    // Coingecko endpoint
+    $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr";
+
+    // Tambahkan API Key jika ada
+    if (!empty($coingecko_token)) {
+        $url .= "&x_cg_demo_api_key=" . $coingecko_token;
+    }
+
+    $ch = curl_init();
+    curl_setopt_array($ch, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_FAILONERROR => false,
+    ]);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlErr  = curl_error($ch);
+    curl_close($ch);
+
+    // Error Handling
+    if ($curlErr || !$response || $httpCode >= 400) {
+        error_log("Coingecko API Error: HTTP $httpCode | CURL: $curlErr | Resp: $response");
+        return "API ERROR";
+    }
+
+    $data = json_decode($response, true);
+
+    if (!isset($data['verus-coin']['idr'])) {
+        return "NO PRICE";
+    }
+
+    // Hitung & format IDR
+    $idr = $amount * $data['verus-coin']['idr'];
+    return number_format($idr, 2, ',', '.') . " IDR";
+}
+
 
 
 // ---------- WORKER HANDLING ----------
