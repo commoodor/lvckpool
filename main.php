@@ -3,6 +3,7 @@
 $address_token         = getenv('ADDRESS_PRIMARY');
 $telegram_bot_token    = getenv('TELEGRAM_BOT_TOKEN');
 $telegram_chat_id      = getenv('TELEGRAM_CHAT_ID');
+$coingecko_token       = getenv('COIN_GECKO_API');
 
 // ---------- LUCKPOOL GET DATA ----------
 $url         = "https://luckpool.net/verus/miner/" . $address_token;
@@ -25,7 +26,7 @@ $balance = $balance_raw / 100000000;
 
 // ---------- PRICE CONVERTER ----------
 function estimatedpaid($amount) {
-    $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr";
+    $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr&x_cg_demo_api_key=" . $coingecko_token;
     $response = @file_get_contents($url);
 
     if (!$response) {
