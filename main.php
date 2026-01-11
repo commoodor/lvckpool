@@ -45,17 +45,22 @@ function estimatedpaid_old($amount) {
 function estimatedpaid($amount) {
     global $coingecko_token;
 
-    // Coingecko endpoint
     $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr";
 
-    // Tambahkan API Key jika ada
+    // Tambah API Key jika ada
     if (!empty($coingecko_token)) {
         $url .= "&x_cg_demo_api_key=" . $coingecko_token;
     }
 
+    $headers = [
+        "User-Agent: VerusPoolBot/1.0 (+https://github.com/commoodor/lvckpool)",
+        "Accept: application/json"
+    ];
+
     $ch = curl_init();
     curl_setopt_array($ch, [
         CURLOPT_URL => $url,
+        CURLOPT_HTTPHEADER => $headers,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 10,
         CURLOPT_FAILONERROR => false,
@@ -66,7 +71,6 @@ function estimatedpaid($amount) {
     $curlErr  = curl_error($ch);
     curl_close($ch);
 
-    // Error Handling
     if ($curlErr || !$response || $httpCode >= 400) {
         error_log("Coingecko API Error: HTTP $httpCode | CURL: $curlErr | Resp: $response");
         return "API ERROR";
@@ -78,12 +82,9 @@ function estimatedpaid($amount) {
         return "NO PRICE";
     }
 
-    // Hitung & format IDR
     $idr = $amount * $data['verus-coin']['idr'];
     return number_format($idr, 2, ',', '.') . " IDR";
 }
-
-
 
 // ---------- WORKER HANDLING ----------
 $workers = $data['workers'];
