@@ -25,7 +25,8 @@ $balance = $balance_raw / 100000000;
 
 
 // ---------- PRICE CONVERTER ----------
-function estimatedpaid($amount, $coingecko_token) {
+function estimatedpaid($amount) {
+    global $coingecko_token;
     $url = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=idr&x_cg_demo_api_key=" . $coingecko_token;
     $response = @file_get_contents($url);
 
